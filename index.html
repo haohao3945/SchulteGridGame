@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schulte Grid</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    header {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 1px;
+      text-align: center;
+      font-size: 24px;
+      width: 100%;
+	  margin-bottom:13px;
+    }
+
+    #grid-container {
+      width:300px;
+      margin: 20px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .grid-item {
+      width: 100%;
+      height: 50px;
+      background-color: #e0e0e0;
+      font-size: 18px;
+      line-height: 50px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    #reset-button {
+      margin-top: 20px;
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h4>Schulte Grid Game</h4>
+</header>
+
+<div>
+  <label for="grid-size">Choose Grid Size:</label>
+  <select id="grid-size" onchange="changeGridSize()">
+    <option value="3">3x3</option>
+    <option value="4">4x4</option>
+    <option value="5" selected>5x5</option>
+  </select>
+</div>
+
+<div id="grid-container"></div>
+<button id="reset-button" onclick="resetGrid()">Reset Grid</button>
+
+<script>
+  let gridSize = 5;
+
+  function generateRandomGrid() {
+    const numbers = Array.from({ length: gridSize * gridSize }, (_, index) => index + 1);
+    numbers.sort(() => Math.random() - 0.5);
+    return numbers;
+  }
+
+  function generateGrid() {
+    const gridContainer = document.getElementById('grid-container');
+    gridContainer.innerHTML = '';
+
+    const randomGrid = generateRandomGrid();
+
+    for (let i = 0; i < gridSize * gridSize; i++) {
+      const gridItem = document.createElement('div');
+      gridItem.className = 'grid-item';
+      gridItem.innerText = randomGrid[i];
+      gridItem.addEventListener('click', () => handleGridItemClick(randomGrid[i]));
+      gridContainer.appendChild(gridItem);
+    }
+  }
+
+  function handleGridItemClick(number) {
+    // Handle grid item click, e.g., highlight the clicked item
+    console.log(`Clicked on item: ${number}`);
+  }
+
+  function resetGrid() {
+    generateGrid();
+  }
+
+  function changeGridSize() {
+    gridSize = parseInt(document.getElementById('grid-size').value, 10);
+    const gridContainer = document.getElementById('grid-container');
+    gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+    generateGrid();
+  }
+
+  // Initial grid generation
+  generateGrid();
+</script>
+
+</body>
+</html>
